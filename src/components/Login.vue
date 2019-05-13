@@ -59,18 +59,30 @@
 </template>
 
 <script>
+
   export default {
     data () {
-    return {
-      show1: false,
-      password: '',
-      rules: {
-        required: value => !!value || 'Requiredo.',
-        min: v => v.length >= 4 || 'Min 4 characters',
-        emailMatch: () => ('El correo o la contraseña no son correctos.')
+      return {
+        valid: true,
+        show1: false,
+        password: '',
+        rules: {
+          required: value => !!value || 'Requiredo.',
+          min: v => v.length >= 4 || 'Min 4 characters',
+          emailMatch: () => ('El correo o la contraseña no son correctos.')
+        },
+        email: '',
+        emailRules: [
+          v => !!v || 'E-mail is required',
+          v => /.+@.+/.test(v) || 'E-mail must be valid'
+        ],
+      }
+    },
+    methods: {
+      login() {
+        
       }
     }
-  }
   }
 </script>
 
