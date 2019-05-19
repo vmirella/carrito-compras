@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
+import DetalleProducto from "../components/DetalleProducto.vue";
 import Products from "../components/Products.vue";
 import Login from "../components/Login.vue";
 import Home from "../components/Home.vue";
@@ -23,6 +24,11 @@ const router = new Router({
             path: "/products",
             name: "Products",
             component: Products,
+        },
+        {
+            path: "/detailproducts",
+            name: "DetalleProducto",
+            component: DetalleProducto,
         },
     ]
 });

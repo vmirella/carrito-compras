@@ -1,5 +1,5 @@
 <template>
-  <v-content>
+  <v-content class="grey lighten-1">
     <v-carousel height="700" class="mb-3">
       <v-carousel-item
         v-for="slide in slider"
@@ -10,7 +10,7 @@
 
   <v-layout justify-center>
     <v-flex xs12 sm8>
-      <v-card class="grey darken-3">
+      <v-card class="grey darken-2">
         <h2 class="pt-2" style="font-weight: 300; font-size: 26px; color: white; text-align: center; color: white;">NUESTRAS CATEGORÍAS</h2>
         <v-container fluid grid-list-md class="pt-1">
           <v-layout row wrap>
@@ -43,8 +43,8 @@
         </v-container>
       </v-card>
       <!-- NUEVOS PRODUCTOS -->
-      <v-card class="grey darken-3">
-      <h2 class="pt-2" style="font-weight: 300; font-size: 26px; color: white; text-align: center; color: white;">NUEVOS PRODUCTOS</h2>
+      <v-card class="grey darken-2">
+      <h2 class="pt-2" style="font-weight: 300; font-size: 26px; text-align: center; color: white;">NUEVOS PRODUCTOS</h2>
       <v-container fluid grid-list-md class="pt-1">
         <v-layout row wrap>
           <v-flex
