@@ -10,7 +10,6 @@ Vue.use(Router)
 
 const router = new Router({
     mode: "history",
-    base: '/carrito-compras/',
     routes: [
         {
             path: "/",
