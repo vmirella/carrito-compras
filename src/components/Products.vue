@@ -1,6 +1,6 @@
 <template>
   <!-- <v-card class="grey darken-3"> -->
-    <v-content grid-list-md justify-center class="mt-5 mb-5" style="max-width: 1268px; margin: 0 auto">
+    <v-content grid-list-md justify-center class="mt-5 mb-5" style="width: 100%; max-width: 1268px; margin: 0 auto">
       <v-layout row wrap justify-center>
         <v-flex
           v-for="product in products"
