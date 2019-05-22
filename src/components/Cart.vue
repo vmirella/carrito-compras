@@ -12,7 +12,7 @@
           <template v-slot:items="props">
             <td class="text-xs-center">
               <v-img
-                :src="`http://pruebas.co.pe/carrito/${props.item.image}`"
+                :src="`https://pruebas.co.pe/carrito/${props.item.image}`"
                 width="100%"
                 max-width="80px"
               >

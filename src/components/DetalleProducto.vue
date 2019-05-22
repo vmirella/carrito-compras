@@ -17,7 +17,7 @@
     <v-layout row wrap justify-center>
       <v-flex xs12 sm12 md6 lg4>
         <div class="grey darken-2 mr-3">
-          <v-img v-if="product.imagen !== undefined" :src="`http://pruebas.co.pe/carrito/${product.imagen}`" aspect-ratio="1"></v-img>
+          <v-img v-if="product.imagen !== undefined" :src="`https://pruebas.co.pe/carrito/${product.imagen}`" aspect-ratio="1"></v-img>
         </div>
       </v-flex>  
       <v-flex xs12 sm12 md6 lg4>
@@ -142,7 +142,7 @@ export default {
       type: 'detail',
       nombre: this.$route.query.product
     }
-    axios({ method: "GET", "url": "http://pruebas.co.pe/carrito/productos.php", params }).then(result => {
+    axios({ method: "GET", "url": "https://pruebas.co.pe/carrito/productos.php", params }).then(result => {
         this.product = result.data;
     }, error => {
         console.error(error);

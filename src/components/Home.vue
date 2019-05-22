@@ -4,7 +4,7 @@
       <v-carousel-item
         v-for="slide in slider"
         :key="slide.orden"
-        :src="`http://pruebas.co.pe/carrito/${slide.imagen}`"
+        :src="`https://pruebas.co.pe/carrito/${slide.imagen}`"
       ></v-carousel-item>
     </v-carousel>
 
@@ -22,7 +22,7 @@
               <v-card>
                 <router-link :to="{ path: '/products', query: { category: category.nombre }}">
                   <v-img
-                    :src="`http://pruebas.co.pe/carrito/${category.imagen}`"
+                    :src="`https://pruebas.co.pe/carrito/${category.imagen}`"
                     width="100%"
                   >
                     <v-container
@@ -58,7 +58,7 @@
             <v-card>
               <router-link :to="{ path: '/detailproducts', query: { product: product.nombre }}">
                 <v-img
-                  :src="`http://pruebas.co.pe/carrito/${product.imagen}`"
+                  :src="`https://pruebas.co.pe/carrito/${product.imagen}`"
                   width="100%"
                 >
                   <v-container
@@ -99,14 +99,14 @@ export default {
     }
   },
   mounted() {
-    axios({ method: "GET", "url": "http://pruebas.co.pe/carrito/categorias.php" }).then(result => {
+    axios({ method: "GET", "url": "https://pruebas.co.pe/carrito/categorias.php" }).then(result => {
         this.categories = result.data;
         console.log(result.data)
     }, error => {
         console.error(error);
     });
 
-    axios({ method: "GET", "url": "http://pruebas.co.pe/carrito/slider.php" }).then(result => {
+    axios({ method: "GET", "url": "https://pruebas.co.pe/carrito/slider.php" }).then(result => {
         this.slider = result.data;
         console.log(result.data)
     }, error => {
@@ -117,7 +117,7 @@ export default {
       type: 'home'
     }
 
-    axios({ method: "GET", "url": "http://pruebas.co.pe/carrito/productos.php", params }).then(result => {
+    axios({ method: "GET", "url": "https://pruebas.co.pe/carrito/productos.php", params }).then(result => {
         this.products = result.data;
         console.log(result.data)
     }, error => {

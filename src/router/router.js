@@ -12,27 +12,27 @@ const router = new Router({
     mode: "history",
     routes: [
         {
-            path: "/",
+            path: "/carrito-compras/",
             name: "Home",
             component: Home,
         },
         {
-            path: "/login",
+            path: "/carrito-compras/login",
             name: "Login",
             component: Login,
         },
         {
-            path: "/products",
+            path: "/carrito-compras/products",
             name: "Products",
             component: Products,
         },
         {
-            path: "/detailproducts",
+            path: "/carrito-compras/detailproducts",
             name: "DetalleProducto",
             component: DetalleProducto,
         },
         {
-            path: "/cart",
+            path: "/carrito-compras/cart",
             name: "Cart",
             component: Cart,
         },

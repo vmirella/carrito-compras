@@ -66,7 +66,7 @@
         white--text
         xs12
       >
-        Desarrollado por: <a href="https://vmirella.github.io/" target="_blank" class="font-weight-bold white--text">Virginia Contreras Villafuerte</a> - 2019
+        Desarrollado por: <a href="httpss://vmirella.github.io/" target="_blank" class="font-weight-bold white--text">Virginia Contreras Villafuerte</a> - 2019
       </v-flex>
      </v-footer>
   </v-app>
@@ -89,7 +89,7 @@ export default {
     }
   },
   mounted() {
-    axios({ method: "GET", "url": "http://pruebas.co.pe/carrito/categorias.php" }).then(result => {
+    axios({ method: "GET", "url": "https://pruebas.co.pe/carrito/categorias.php" }).then(result => {
         this.categories = result.data;
         console.log(result.data)
     }, error => {

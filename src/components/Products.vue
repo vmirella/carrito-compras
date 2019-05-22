@@ -12,7 +12,7 @@
             <v-card>
               <router-link :to="{ path: '/detailproducts', query: { product: product.nombre }}">
                 <v-img
-                  :src="`http://pruebas.co.pe/carrito/${product.imagen}`"
+                  :src="`https://pruebas.co.pe/carrito/${product.imagen}`"
                   height="400px"
                 >
                   <v-container
@@ -62,7 +62,7 @@ export default {
       category: category
     }
     
-    axios({ method: "GET", "url": "http://pruebas.co.pe/carrito/productos.php", params }).then(result => {
+    axios({ method: "GET", "url": "https://pruebas.co.pe/carrito/productos.php", params }).then(result => {
         this.products = result.data;
         console.log(result.data)
     }, error => {
