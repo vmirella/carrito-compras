@@ -1,24 +1,45 @@
 <template>
-  <v-content grid-list-md text-xs-center class="grey lighten-1">
-    <v-layout row wrap justify-center style="padding-top:100px">
-      <v-flex xs12 sm4>
+  <v-content grid-list-md text-xs-center grey lighten-1 class="grey lighten-1 mt-4">
+    <v-layout row wrap justify-center>
+      <v-flex xs12>
+        <v-btn
+          :disabled="loading3"
+          color="blue-grey"
+          class="white--text"
+          @click="$router.go(-1)"
+        >
+          Volver
+          <v-icon right dark>keyboard_arrow_left</v-icon>
+        </v-btn>
+      </v-flex>
+    </v-layout>
+
+    <v-layout row wrap justify-center>
+      <v-flex xs12 sm12 md6 lg4>
         <div class="grey darken-2 mr-3">
-          <v-img src="http://republica1821.com/images/2018/04/I-WANT-YOU-FOR-INCA-ARMY.png" aspect-ratio="1"></v-img>
+          <v-img v-if="product.imagen !== undefined" :src="`http://pruebas.co.pe/carrito/${product.imagen}`" aspect-ratio="1"></v-img>
         </div>
       </v-flex>  
-      <v-flex xs12 sm4>
+      <v-flex xs12 sm12 md6 lg4>
         <div class="grey darken-2" style="padding: 32px; color: white;">
           <div class="grey darken-1 pt-2 pb-2 pl-4 title" style="text-aling: center;">
-            <h3>Inca Army</h3>
+            <h3>{{product.nombre}}</h3>
           </div>
           <div class="pt-4 subheading"> 
-            <h3>Precio: S/. 59</h3>
+            <h3>Precio: S/. {{product.precio}}</h3>
+          </div>
+          <div class="pt-4 subheading"> 
+            <p>
+              Tallas disponibles desde la "S" a la "XL"<v-spacer></v-spacer>
+              Enviamos a todo el Perú<v-spacer></v-spacer>
+              Haz tu pedido ahora
+            </p>
           </div>
           <div class="pt-4 subheading">
             <h3>Talla</h3>
             <v-flex xs12 sm6 d-flex>              
               <v-select
-                v-model="value"
+                v-model="size"
                 :items="tallas"                
                 label="Elije tu talla"
                 solo
@@ -31,7 +52,7 @@
             <v-text-field
                 placeholder=""
                 type="number"
-                value="1"
+                v-model="quantity"
                 min="1"
                 max="10"
                 solo
@@ -40,16 +61,50 @@
           </div>
 
           <v-btn
+            large
             color="deep-orange accent-4"
-            class="white--text"
-            @click="loader = 'loading3'"
+            class="white--text mt-4 mb-4"
+            @click="add(product.nombre, product.precio, product.imagen)"
           >
-            Añadir {{ number }}
+            Añadir 
             <v-icon right dark>add_shopping_cart</v-icon>
           </v-btn>
         </div>      
       </v-flex>
     </v-layout>
+
+    <v-dialog
+      v-model="dialog"
+      max-width="350"
+    >
+      <v-card>
+
+        <v-card-text>
+          <v-content class="pt-0">
+            <v-layout row wrap>
+              <v-flex xs12 class="text-xs-center">
+                <v-icon size="60" color="green darken-2">check_circle</v-icon>
+                <h3>Su producto ha sido agregado al carrito.</h3>
+              </v-flex>
+            </v-layout>
+          </v-content>   
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="green darken-1"
+            flat="flat"
+            @click="dialog = false"
+          >
+            Seguir comprando
+          </v-btn>
+
+          <router-link to="/cart" class="body-2 font-weight-bold green darken-1 white--text v-btn v-btn--flat" flat>Ir al carrito</router-link>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-content>
   
 </template>
@@ -57,30 +112,38 @@
 <script>
 
 import axios from "axios";
-import { mapState } from 'vuex';
 
 export default {
   name: 'Products',
-  computed: {
-    ...mapState([
-      'title',
-      'number'
-    ])
-  },
   data () {
     return {
-      products: [],
-      value: 'M',
-      tallas: ['XS', 'S', 'M', 'L', 'XL']
+      product: [],
+      size: 'M',
+      quantity: 1,
+      tallas: ['XS', 'S', 'M', 'L', 'XL'],
+      dialog: false
+    }
+  },
+  methods: {
+    add: function (name, price, image) {
+      this.$store.commit('addCart', {
+        name: name,
+        price: price,
+        image: image,
+        size: this.size,
+        quantity: this.quantity
+      })
+
+      this.dialog = true
     }
   },
   mounted() {
     let params = {
-      type: 'detail'
+      type: 'detail',
+      nombre: this.$route.query.product
     }
     axios({ method: "GET", "url": "http://pruebas.co.pe/carrito/productos.php", params }).then(result => {
-        this.products = result.data;
-        console.log(result.data)
+        this.product = result.data;
     }, error => {
         console.error(error);
     });

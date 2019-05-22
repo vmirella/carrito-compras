@@ -9,8 +9,16 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    title: 'Hola',
-    products: []
+    cart: [],
+    count: 0,
+    total: 0
+  },
+  mutations: {
+    addCart (state, product) {
+      state.cart.push(product) //añadir producto al array cart
+      state.count = state.cart.length //actualizar el conteo de elementos en cart
+      state.total += product.price * product.quantity
+    },
   }
 });
 

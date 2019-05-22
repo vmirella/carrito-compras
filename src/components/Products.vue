@@ -10,21 +10,23 @@
             v-bind="{ [`xs4`]: true }"
           >
             <v-card>
-              <v-img
-                :src="`http://pruebas.co.pe/carrito/${product.imagen}`"
-                height="400px"
-              >
-                <v-container
-                  fill-height
-                  fluid
-                  pa-2
+              <router-link :to="{ path: '/detailproducts', query: { product: product.nombre }}">
+                <v-img
+                  :src="`http://pruebas.co.pe/carrito/${product.imagen}`"
+                  height="400px"
                 >
-                </v-container>
-              </v-img>
+                  <v-container
+                    fill-height
+                    fluid
+                    pa-2
+                  >
+                  </v-container>
+                </v-img>
+              </router-link>
 
               <v-card-title primary-title>
                 <div>
-                  <h3 class="headline mb-0">{{product.nombre}}</h3>
+                  <router-link :to="{ path: '/detailproducts', query: { product: product.nombre }}"><h3 class="headline mb-0">{{product.nombre}}</h3></router-link>
                 </div>
               </v-card-title>
             </v-card>
@@ -38,21 +40,34 @@
 <script>
 
 import axios from "axios";
+import { cpus } from 'os';
 
 export default {
   name: 'Products',
   data () {
     return {
-      products: [],
+      products: []
     }
   },
   mounted() {
-    axios({ method: "GET", "url": "http://pruebas.co.pe/carrito/productos.php" }).then(result => {
+
+    let category = ''
+
+    //si categorias existe en el url
+    if(this.$route.query.category != undefined){
+      category = this.$route.query.category
+    }
+
+    let params = {
+      category: category
+    }
+    
+    axios({ method: "GET", "url": "http://pruebas.co.pe/carrito/productos.php", params }).then(result => {
         this.products = result.data;
         console.log(result.data)
     }, error => {
         console.error(error);
     });
-  },
+  }
 }
 </script>
