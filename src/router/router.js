@@ -10,29 +10,30 @@ Vue.use(Router)
 
 const router = new Router({
     mode: "history",
+    base: '/carrito-compras/',
     routes: [
         {
-            path: "/carrito-compras/",
+            path: "/",
             name: "Home",
             component: Home,
         },
         {
-            path: "/carrito-compras/login",
+            path: "/login",
             name: "Login",
             component: Login,
         },
         {
-            path: "/carrito-compras/products",
+            path: "/products",
             name: "Products",
             component: Products,
         },
         {
-            path: "/carrito-compras/detailproducts",
+            path: "/detailproducts",
             name: "DetalleProducto",
             component: DetalleProducto,
         },
         {
-            path: "/carrito-compras/cart",
+            path: "/cart",
             name: "Cart",
             component: Cart,
         },
