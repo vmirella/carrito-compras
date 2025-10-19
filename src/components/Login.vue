@@ -1,7 +1,6 @@
 <template>
   <v-container grid-list-md text-xs-center>
     <v-layout row wrap justify-center border>
-
       <v-flex xs12>
         <v-img
           :src="require('../assets/logo.svg')"
@@ -12,14 +11,8 @@
       </v-flex>
 
       <v-flex xs12 sm12 mb8 lg6>
-
         <v-card class="pa-3">
-          <v-form
-            ref="form"
-            v-model="valid"
-            lazy-validation
-          >
-            
+          <v-form ref="form" v-model="valid" lazy-validation>
             <v-text-field
               v-model="email"
               :rules="emailRules"
@@ -39,53 +32,39 @@
               @click:append="show1 = !show1"
             ></v-text-field>
 
-            <v-btn
-              :disabled="!valid"
-              color="success"
-              @click="login"
-            >
+            <v-btn :disabled="!valid" color="success" @click="login">
               Ingresar
             </v-btn>
-
           </v-form>
         </v-card>
-        
       </v-flex>
-
-      
-      
     </v-layout>
   </v-container>
 </template>
 
 <script>
-
-  export default {
-    data () {
-      return {
-        valid: true,
-        show1: false,
-        password: '',
-        rules: {
-          required: value => !!value || 'Requiredo.',
-          min: v => v.length >= 4 || 'Min 4 characters',
-          emailMatch: () => ('El correo o la contraseña no son correctos.')
-        },
-        email: '',
-        emailRules: [
-          v => !!v || 'E-mail is required',
-          v => /.+@.+/.test(v) || 'E-mail must be valid'
-        ],
-      }
-    },
-    methods: {
-      login() {
-        
-      }
-    }
+export default {
+  data() {
+    return {
+      valid: true,
+      show1: false,
+      password: "",
+      rules: {
+        required: value => !!value || "Requiredo.",
+        min: v => v.length >= 4 || "Min 4 characters",
+        emailMatch: () => "El correo o la contraseña no son correctos."
+      },
+      email: "",
+      emailRules: [
+        v => !!v || "E-mail is required",
+        v => /.+@.+/.test(v) || "E-mail must be valid"
+      ]
+    };
+  },
+  methods: {
+    login() {}
   }
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

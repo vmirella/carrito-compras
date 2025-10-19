@@ -1,13 +1,14 @@
 <template>
-  <v-content grid-list-md text-xs-center grey lighten-1 class="grey lighten-1 mt-4">
+  <v-content
+    grid-list-md
+    text-xs-center
+    grey
+    lighten-1
+    class="grey lighten-1 mt-4"
+  >
     <v-layout row wrap justify-center>
       <v-flex xs12>
-        <v-btn
-          :disabled="loading3"
-          color="blue-grey"
-          class="white--text"
-          @click="$router.go(-1)"
-        >
+        <v-btn color="blue-grey" class="white--text" @click="$router.go(-1)">
           Volver
           <v-icon right dark>keyboard_arrow_left</v-icon>
         </v-btn>
@@ -17,39 +18,46 @@
     <v-layout row wrap justify-center>
       <v-flex xs12 sm12 md6 lg4>
         <div class="grey darken-2 mr-3">
-          <v-img v-if="product.imagen !== undefined" :src="`https://pruebas.co.pe/carrito/${product.imagen}`" aspect-ratio="1"></v-img>
+          <v-img
+            v-if="product.imagen !== undefined"
+            :src="`https://josetello.com/cart/${product.imagen}`"
+            aspect-ratio="1"
+          ></v-img>
         </div>
-      </v-flex>  
+      </v-flex>
       <v-flex xs12 sm12 md6 lg4>
-        <div class="grey darken-2" style="padding: 32px; color: white;">
-          <div class="grey darken-1 pt-2 pb-2 pl-4 title" style="text-aling: center;">
-            <h3>{{product.nombre}}</h3>
+        <div class="grey darken-2" style="padding: 32px; color: white">
+          <div
+            class="grey darken-1 pt-2 pb-2 pl-4 title"
+            style="text-aling: center"
+          >
+            <h3>{{ product.nombre }}</h3>
           </div>
-          <div class="pt-4 subheading"> 
-            <h3>Precio: S/. {{product.precio}}</h3>
+          <div class="pt-4 subheading">
+            <h3>Precio: S/. {{ product.precio }}</h3>
           </div>
-          <div class="pt-4 subheading"> 
+          <div class="pt-4 subheading">
             <p>
-              Tallas disponibles desde la "S" a la "XL"<v-spacer></v-spacer>
-              Enviamos a todo el Perú<v-spacer></v-spacer>
+              Tallas disponibles desde la "S" a la "XL"<v-spacer
+              ></v-spacer> Enviamos a todo el Perú<v-spacer></v-spacer>
               Haz tu pedido ahora
             </p>
           </div>
           <div class="pt-4 subheading">
             <h3>Talla</h3>
-            <v-flex xs12 sm6 d-flex>              
+            <v-flex xs12 sm6 d-flex>
               <v-select
                 v-model="size"
-                :items="tallas"                
+                :items="setSizes(product.id_categoria)"
                 label="Elije tu talla"
                 solo
               ></v-select>
             </v-flex>
-                </div>
+          </div>
           <div class="pt-4 subheading">
             <h3>Cantidad</h3>
             <v-flex xs12 sm6 md3>
-            <v-text-field
+              <v-text-field
                 placeholder=""
                 type="number"
                 v-model="quantity"
@@ -66,19 +74,15 @@
             class="white--text mt-4 mb-4"
             @click="add(product.nombre, product.precio, product.imagen)"
           >
-            Añadir 
+            Añadir
             <v-icon right dark>add_shopping_cart</v-icon>
           </v-btn>
-        </div>      
+        </div>
       </v-flex>
     </v-layout>
 
-    <v-dialog
-      v-model="dialog"
-      max-width="350"
-    >
+    <v-dialog v-model="dialog" max-width="350">
       <v-card>
-
         <v-card-text>
           <v-content class="pt-0">
             <v-layout row wrap>
@@ -87,71 +91,73 @@
                 <h3>Su producto ha sido agregado al carrito.</h3>
               </v-flex>
             </v-layout>
-          </v-content>   
+          </v-content>
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn
-            color="green darken-1"
-            flat="flat"
-            @click="dialog = false"
-          >
+          <v-btn color="green darken-1" flat="flat" @click="dialog = false">
             Seguir comprando
           </v-btn>
 
-          <router-link to="/cart" class="body-2 font-weight-bold green darken-1 white--text v-btn v-btn--flat" flat>Ir al carrito</router-link>
+          <router-link
+            to="/cart"
+            class="body-2 font-weight-bold green darken-1 white--text v-btn v-btn--flat"
+            flat
+            >Ir al carrito</router-link
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
   </v-content>
-  
 </template>
 
 <script>
-
-import axios from "axios";
+import { getProducts } from "@/services/apiService";
 
 export default {
-  name: 'Products',
-  data () {
+  name: "Products",
+  data() {
     return {
       product: [],
-      size: 'M',
+      size: "M",
       quantity: 1,
-      tallas: ['XS', 'S', 'M', 'L', 'XL'],
+      tallas: [],
       dialog: false
-    }
+    };
+  },
+  mounted() {
+    this.getProduct();
+    this.tallas = this.setSizes();
   },
   methods: {
-    add: function (name, price, image) {
-      this.$store.commit('addCart', {
+    setSizes(idCategoria) {
+      if (idCategoria !== 3) {
+        return ["XS", "S", "M", "L", "XL"];
+      } else {
+        return ["6", "8", "10", "12", "13"];
+      }
+    },
+    add: function(name, price, image) {
+      this.$store.commit("addCart", {
         name: name,
         price: price,
         image: image,
         size: this.size,
         quantity: this.quantity
-      })
+      });
 
-      this.dialog = true
+      this.dialog = true;
+    },
+    async getProduct() {
+      const params = {
+        type: "detail",
+        nombre: this.$route.query.product
+      };
+      const productResponse = await getProducts(params);
+      this.product = productResponse[0];
     }
-  },
-  mounted() {
-    let params = {
-      type: 'detail',
-      nombre: this.$route.query.product
-    }
-    axios({ method: "GET", "url": "https://pruebas.co.pe/carrito/productos.php", params }).then(result => {
-        this.product = result.data;
-    }, error => {
-        console.error(error);
-    });
-  },
-}
+  }
+};
 </script>
-
-<style>
-  
-</style>
-
