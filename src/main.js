@@ -1,8 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import "./plugins/vuetify";
 import App from "./App.vue";
 import router from "./router/router.js";
+import vuetify from "./plugins/vuetify";
+import "@mdi/font/css/materialdesignicons.css";
 
 Vue.config.productionTip = false;
 Vue.use(Vuex);
@@ -25,5 +26,6 @@ const store = new Vuex.Store({
 new Vue({
   router,
   store: store,
+  vuetify,
   render: h => h(App)
 }).$mount("#app");

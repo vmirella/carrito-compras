@@ -1,11 +1,11 @@
 import Vue from "vue";
 import Router from "vue-router";
-import DetalleProducto from "../components/DetalleProducto.vue";
-import Products from "../components/Products.vue";
-import Login from "../components/Login.vue";
-import Home from "../components/Home.vue";
-import Cart from "../components/Cart.vue";
-
+import DetalleProducto from "@/views/DetalleProducto.vue";
+import Products from "@/views/Products.vue";
+import Login from "@/views/Login.vue";
+import Home from "@/views/Home.vue";
+import Cart from "@/views/Cart.vue";
+// components
 Vue.use(Router);
 
 const router = new Router({
