@@ -1,7 +1,6 @@
 <template>
   <v-main class="grey lighten-1">
     <v-container class="white my-3 rounded">
-      <!-- Botón Volver -->
       <v-row>
         <v-col
           cols="12"
@@ -24,12 +23,8 @@
           </v-btn>
         </v-col>
       </v-row>
-      <!-- Contenido principal -->
       <v-row justify="center" align="start" class="mt-0">
-        <!-- Imagen del producto -->
-
         <v-col cols="12" sm="10" md="6" lg="5">
-          <!-- <v-card class="grey darken-2" flat> -->
           <v-img
             v-if="product.imagen !== undefined"
             :src="`https://josetello.com/cart/${product.imagen}`"
@@ -37,26 +32,20 @@
             cover
           >
           </v-img>
-          <!-- </v-card> -->
         </v-col>
 
-        <!-- Información del producto -->
         <v-col cols="12" sm="10" md="6" lg="5">
-          <!-- <v-card class="white" flat> -->
           <v-container fluid>
             <h5 class="overflow-x-hidden text-capitalize gray--text text-h5">
               {{ product.nombre }}
             </h5>
-            <!-- Nombre del producto -->
 
-            <!-- Precio -->
             <div class="pt-2">
               <h6 class="text-h6 accent--text">
                 Precio: S/. {{ product.precio }}
               </h6>
             </div>
 
-            <!-- Descripción -->
             <div class="pt-2">
               <p class="text-body-1">
                 Todas las tallas disponibles<br />
@@ -65,13 +54,11 @@
               </p>
             </div>
 
-            <!-- Selector de talla -->
             <v-row>
               <v-col class="v-flex align-content-center py-0" cols="12"
                 ><p class="mb-0">Talla</p></v-col
               >
 
-              <!-- <v-col class="v-flex align-content-center" cols="12" sm="6"> -->
               <v-col class="d-flex" cols="12" sm="6">
                 <v-select
                   v-model="size"
@@ -88,7 +75,6 @@
                 ><p class="mb-0">Cantidad</p></v-col
               >
 
-              <!-- <v-col class="v-flex align-content-center" cols="12" sm="6"> -->
               <v-col class="d-flex" cols="12" sm="6">
                 <v-text-field
                   v-model="quantity"
@@ -102,7 +88,6 @@
               </v-col>
             </v-row>
 
-            <!-- Botón Añadir -->
             <v-btn
               large
               color="primary"
@@ -113,13 +98,11 @@
               <v-icon left dark>add_shopping_cart</v-icon>
               Añadir al carrito
             </v-btn>
-            <!-- </v-card> -->
           </v-container>
         </v-col>
       </v-row>
     </v-container>
 
-    <!-- Diálogo de confirmación -->
     <v-dialog v-model="dialog" max-width="400">
       <v-card>
         <v-card-text class="pt-6">

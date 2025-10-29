@@ -8,7 +8,7 @@ const api = axios.create({
 export const getProducts = async params => {
   try {
     const { data } = await api.get("products.php", { params });
-    console.log("data", data);
+
     return data;
   } catch (error) {
     console.error("Error al obtener los productos:", error);
@@ -19,7 +19,7 @@ export const getProducts = async params => {
 export const getCategories = async params => {
   try {
     const { data } = await api.get("categories.php", { params });
-    console.log("data", data);
+
     return data;
   } catch (error) {
     console.error("Error al obtener los productos:", error);
@@ -30,7 +30,7 @@ export const getCategories = async params => {
 export const getSlider = async params => {
   try {
     const { data } = await api.get("slider.php", { params });
-    console.log("data", data);
+
     return data;
   } catch (error) {
     console.error("Error al obtener los productos:", error);

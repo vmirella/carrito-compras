@@ -1,7 +1,5 @@
 <template>
   <v-main class="grey lighten-1 mt-3 text-center px-2">
-    <!-- <v-row justify="center"> -->
-    <!-- <v-col cols="12" sm="12" md="10" lg="8"> -->
     <v-data-table
       :headers="headers"
       :items="cart"
@@ -12,7 +10,6 @@
       :mobile-breakpoint="0"
       :no-data-text="noDataMessage"
     >
-      <!-- Template para cuando no hay datos -->
       <template v-slot:no-data>
         <div class="pa-6">
           <v-icon size="64" color="grey lighten-1" class="mb-4"
@@ -28,7 +25,6 @@
         </div>
       </template>
 
-      <!-- Template para la columna de imagen -->
       <template v-slot:item.image="{ item }">
         <v-img
           :src="`https://josetello.com/cart/${item.image}`"
@@ -37,16 +33,14 @@
           class="mx-auto"
           contain
         >
-          <!-- <v-container fill-height fluid class="pa-2"> </v-container> -->
         </v-img>
       </template>
 
-      <!-- Template para la columna del nombre -->
       <template v-slot:item.name="{ item }">
         <p class="text-capitalize ma-0">{{ item.name }}</p>
       </template>
 
-      <!-- Template para el footer con el total -->
+      \
       <template v-slot:footer>
         <v-divider></v-divider>
         <div class="text-right pa-4">
@@ -56,8 +50,6 @@
         </div>
       </template>
     </v-data-table>
-    <!-- </v-col> -->
-    <!-- </v-row> -->
   </v-main>
 </template>
 
@@ -111,13 +103,10 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos para hacer la tabla responsive */
 .v-data-table {
-  /* overflow-x: none; */
   width: 100%;
 }
 
-/* Asegurar que las celdas tengan un tamaño mínimo en mobile */
 ::v-deep .v-data-table td {
   min-width: 80px;
   padding: 8px 4px;

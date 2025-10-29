@@ -12,7 +12,6 @@
 
     <v-row justify="center" class="mx-2">
       <v-col cols="12" lg="8">
-        <!-- CATEGORÍAS -->
         <v-card class="grey darken-2 mb-4">
           <v-card-text class="text-center pt-4 pb-1">
             <h2 class="text-h4 font-weight-light white--text">
@@ -58,7 +57,6 @@
           </v-container>
         </v-card>
 
-        <!-- NUEVOS PRODUCTOS -->
         <v-card class="grey darken-2">
           <v-card-text class="text-center pt-4 pb-1">
             <h2 class="text-h4 font-weight-light white--text">

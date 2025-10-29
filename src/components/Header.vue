@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-app-bar app color="grey darken-3" dark elevate-on-scroll flat>
-      <!-- Marca -->
       <v-toolbar-title class="text-h5  font-weight-black primary--text">
         <v-icon large dark color="primary">mdi-flag</v-icon>
 
@@ -75,7 +74,6 @@
 
       <!-- Menú mobile -->
       <div class="d-flex d-sm-none align-center">
-        <!-- Carrito en mobile -->
         <router-link to="/cart" class="mobile-cart mr-3">
           <v-badge
             v-if="hasItems"
@@ -91,14 +89,12 @@
           </v-icon>
         </router-link>
 
-        <!-- Botón menú hamburguesa -->
         <v-btn icon @click="drawer = true" class="ml-2">
           <v-icon color="white">mdi-menu</v-icon>
         </v-btn>
       </div>
     </v-app-bar>
 
-    <!-- Drawer para mobile - FUERA del v-app-bar -->
     <v-navigation-drawer v-model="drawer" temporary fixed right width="300">
       <v-list class="py-0">
         <!-- Header del drawer -->
@@ -239,7 +235,6 @@ export default {
 </script>
 
 <style scoped>
-/* 🔹 Enlaces del navbar */
 .nav-link {
   color: white;
   font-weight: 600;
@@ -257,20 +252,14 @@ export default {
   color: var(--v-primary-base);
   transform: translateY(-1px);
 }
-
-/* 🔹 Enlace del carrito */
 .cart-link {
   padding: 0 8px !important;
 }
-
-/* 🔹 Carrito mobile */
 .mobile-cart {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
 }
-
-/* 🔹 Dropdown de categorías */
 .hoverable-item {
   border-radius: 8px;
   transition: background-color 0.25s ease;
@@ -288,44 +277,33 @@ export default {
 .link-item:hover {
   color: var(--v-primary-base, #d84315);
 }
-
-/* 🔹 Estilos para el menú mobile */
 .mobile-nav-item {
   border-radius: 8px;
   margin: 8px;
   transition: all 0.3s ease;
   cursor: pointer;
 }
-
 .mobile-nav-item:hover {
   background-color: rgba(0, 0, 0, 0.04);
 }
-
 .mobile-subitem {
   border-radius: 6px;
   margin: 4px 8px;
   min-height: 40px;
 }
-
 .mobile-subitem:hover {
   background-color: rgba(0, 0, 0, 0.08);
 }
-
-/* 🔹 Quita subrayado global de router-links */
 a {
   text-decoration: none;
   color: inherit;
 }
-
-/* 🔹 Mejora la visualización del badge */
 .v-badge__badge {
   font-size: 10px;
   height: 18px;
   min-width: 18px;
   font-weight: bold;
 }
-
-/* 🔹 Estilo para el título de la marca */
 .v-toolbar__title a {
   color: var(--v-primary-base) !important;
 }

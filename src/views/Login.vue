@@ -2,7 +2,6 @@
   <v-container class="text-center">
     <v-row justify="center" align="center" style="min-height: 80vh;">
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
-        <!-- Logo -->
         <v-img
           :src="require('../assets/logo.svg')"
           class="my-6"
@@ -10,7 +9,6 @@
           height="120"
         ></v-img>
 
-        <!-- Formulario de login -->
         <v-card class="pa-6" elevation="4" rounded="lg">
           <v-card-title class="text-h5 justify-center primary--text">
             Iniciar Sesión

@@ -1,5 +1,4 @@
 <template>
-  <!-- class="mt-5 mb-5" -->
   <v-main style="width: 100%; max-width: 1268px; margin: 0 auto">
     <v-container fluid>
       <v-row justify="center" dense>
