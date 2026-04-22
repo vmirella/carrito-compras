@@ -1,60 +1,53 @@
 <template>
   <v-container class="text-center">
-    <v-row justify="center" align="center" style="min-height: 80vh;">
+    <v-row justify="center" align="center" style="min-height: 80vh">
       <v-col cols="12" sm="10" md="8" lg="6" xl="4">
-        <v-img
-          :src="require('../assets/logo.svg')"
-          class="my-6"
-          contain
-          height="120"
-        ></v-img>
+        <!-- LOGO -->
+        <v-img :src="logo" class="my-6" height="120" contain />
 
+        <!-- CARD -->
         <v-card class="pa-6" elevation="4" rounded="lg">
-          <v-card-title class="text-h5 justify-center primary--text">
-            Iniciar Sesión
-          </v-card-title>
+          <v-card-title class="text-h5 text-center text-primary">Iniciar Sesión</v-card-title>
 
           <v-card-text>
-            <v-form
-              ref="form"
-              v-model="valid"
-              lazy-validation
-              @submit.prevent="login"
-            >
+            <v-form ref="form" v-model="valid" @submit.prevent="login">
+              <!-- EMAIL -->
               <v-text-field
                 v-model="email"
                 :rules="emailRules"
                 label="E-mail"
                 type="email"
                 required
-                outlined
+                variant="outlined"
                 prepend-inner-icon="mdi-email"
                 class="mb-4"
-              ></v-text-field>
+              />
 
+              <!-- PASSWORD -->
               <v-text-field
                 v-model="password"
-                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :rules="[rules.required, rules.min]"
-                :type="show1 ? 'text' : 'password'"
+                :type="showPassword ? 'text' : 'password'"
                 label="Contraseña"
                 hint="Ingresar al menos 4 caracteres."
                 counter
-                @click:append="show1 = !show1"
-                outlined
+                variant="outlined"
                 prepend-inner-icon="mdi-lock"
                 class="mb-2"
-              ></v-text-field>
+                @click:append-inner="togglePassword"
+              />
 
+              <!-- BUTTON -->
               <v-btn
                 :disabled="!valid"
                 color="primary"
                 type="submit"
-                large
+                size="large"
                 block
                 class="mt-4"
               >
-                <v-icon left>mdi-login</v-icon>
+                <v-icon icon="mdi-login" class="mr-2" />
                 Ingresar
               </v-btn>
             </v-form>
@@ -65,27 +58,33 @@
   </v-container>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      valid: true,
-      show1: false,
-      password: "",
-      rules: {
-        required: value => !!value || "Requiredo.",
-        min: v => v.length >= 4 || "Min 4 characters",
-        emailMatch: () => "El correo o la contraseña no son correctos."
-      },
-      email: "",
-      emailRules: [
-        v => !!v || "E-mail is required",
-        v => /.+@.+/.test(v) || "E-mail must be valid"
-      ]
-    };
-  },
-  methods: {
-    login() {}
+<script setup>
+  import { ref } from 'vue'
+  import logo from '../assets/logo.svg'
+
+  // state
+  const valid = ref(false)
+  const showPassword = ref(false)
+  const email = ref('')
+  const password = ref('')
+
+  // rules
+  const rules = {
+    required: value => !!value || 'Requerido.',
+    min: v => v?.length >= 4 || 'Mínimo 4 caracteres'
   }
-};
+
+  const emailRules = [
+    v => !!v || 'E-mail es requerido',
+    v => /.+@.+/.test(v) || 'E-mail debe ser válido'
+  ]
+
+  // methods
+  const togglePassword = () => {
+    showPassword.value = !showPassword.value
+  }
+
+  const login = () => {
+    // Placeholder: conectar con API de autenticación
+  }
 </script>

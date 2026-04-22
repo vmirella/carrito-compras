@@ -1,44 +1,55 @@
 <template>
   <v-app>
-    <Header :categories="categories" :countCart="countCart" />
-    <router-view :key="$route.fullPath"></router-view>
-    <Footer />
+    <Header :categories="categories" :count-cart="countCart" />
+
+    <RouterView :key="route.fullPath" class="bg-background" />
+
+    <Footere />
   </v-app>
 </template>
 
-<script>
-import { getCategories } from "@/services/apiService";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-export default {
-  name: "App",
-  components: {
-    Header,
-    Footer
-  },
-  data() {
-    return {
-      categories: []
-    };
-  },
-  computed: {
-    countCart: function() {
-      return this.$store.state.count;
-    }
-  },
-  mounted() {
-    this.getCategories();
-  },
-  methods: {
-    async getCategories() {
-      this.categories = await getCategories();
-    }
+<script setup>
+  import { ref, computed, onMounted } from 'vue'
+  import { useRoute } from 'vue-router'
+  import { getCategories } from '@/services/apiService'
+  import { useTheme } from 'vuetify'
+  import { useThemeStore } from '@/stores/theme'
+  import { useCartStore } from '@/stores/cart'
+  import Header from '@/components/Header.vue'
+  import Footere from '@/components/Footer.vue'
+
+  // router
+  const route = useRoute()
+
+  // store (Pinia)
+  const store = useCartStore()
+
+  // state
+  const categories = ref([])
+
+  // computed
+  const countCart = computed(() => {
+    return store.count
+  })
+
+  // methods
+  const fetchCategories = async () => {
+    categories.value = await getCategories()
   }
-};
+
+  const themeStore = useThemeStore()
+  const vuetifyTheme = useTheme()
+
+  vuetifyTheme.global.name.value = themeStore.theme
+
+  // lifecycle
+  onMounted(() => {
+    fetchCategories()
+  })
 </script>
 
 <style>
-a {
-  text-decoration: none;
-}
+  a {
+    text-decoration: none;
+  }
 </style>

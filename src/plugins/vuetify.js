@@ -1,26 +1,77 @@
-import Vue from "vue";
-import Vuetify from "vuetify/lib/framework";
-import "vuetify/dist/vuetify.min.css";
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
 
-Vue.use(Vuetify);
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
 
-export default new Vuetify({
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+
+export default createVuetify({
+  components,
+  directives,
   icons: {
-    iconfont: "mdi"
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi
+    }
   },
   theme: {
+    defaultTheme: 'dark',
     themes: {
       light: {
-        primary: "#D84315", // tono más suave del original
-        secondary: "#5D4037", // marrón grisáceo para equilibrio
-        accent: "#FF8A65", // naranja pastel para resaltar botones o íconos
-        error: "#E64A19", // cálido pero controlado
-        info: "#1976D2", // azul equilibrado
-        success: "#388E3C", // verde profundo profesional
-        warning: "#F9A825", // amarillo cálido
-        background: "#FFF8F5", // blanco con leve tinte cálido
-        text: "#2E2E2E"
+        colors: {
+          primary: '#D84315',
+          'primary-lighten-1': '#FF7043',
+          'primary-darken-1': '#BF360C',
+          secondary: '#5D4037',
+
+          background: '#FFF8F5',
+          surface: '#FFFFFF',
+
+          success: '#388E3C',
+          error: '#E64A19',
+          warning: '#F9A825',
+          info: '#1976D2',
+
+          // 🔥 TEXTOS
+          'on-primary': '#FFFFFF', // sobre primary
+          'on-secondary': '#FFFFFF', // sobre secondary
+          'on-background': '#1A1A1A', // texto general
+          'on-surface': '#1A1A1A', // cards, menus
+          'on-success': '#FFFFFF',
+          'on-error': '#FFFFFF',
+          'on-warning': '#000000',
+          'on-info': '#FFFFFF',
+
+          // 🎨 CUSTOM (opcional pero recomendado)
+          'text-main': '#2D2D2D',
+          'text-muted': '#6B6B6B'
+        }
+      },
+      dark: {
+        dark: true,
+        colors: {
+          background: '#121212',
+          surface: '#1E1E1E',
+          primary: '#FF8A65',
+          secondary: '#5D3510',
+
+          // 🔥 TEXTOS
+          'on-primary': '#000000',
+          'on-secondary': '#FFFFFF',
+          'on-background': '#EDEDED',
+          'on-surface': '#EDEDED',
+          'on-success': '#000000',
+          'on-error': '#000000',
+          'on-warning': '#000000',
+          'on-info': '#000000',
+
+          // 🎨 CUSTOM
+          'text-main': '#F5F5F5',
+          'text-muted': '#B0B0B0'
+        }
       }
     }
   }
-});
+})
