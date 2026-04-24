@@ -1,6 +1,5 @@
 <template>
   <v-main class="bg-grey-lighten-1 mt-3 text-center px-2">
-    <!-- <pre>{{ cartStore.cart }}</pre> -->
     <v-data-table
       :items="cartStore.cart"
       :headers="headers"
@@ -87,6 +86,6 @@
   ]
 
   const noDataMessage = computed(() => {
-    return cartStore.cart.length === 0 ? 'No hay productos en el carrito' : 'Cargando...'
+    return cartStore?.cart.length === 0 ? 'No hay productos en el carrito' : 'Cargando...'
   })
 </script>

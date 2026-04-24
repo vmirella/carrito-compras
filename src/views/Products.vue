@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <v-container fluid>
+    <v-container fluid v-if="hasProducts">
       <v-row>
         <v-col
           v-for="product in products"
@@ -42,11 +42,21 @@
         </v-col>
       </v-row>
     </v-container>
+    <v-container fluid v-else class="fill-height">
+      <v-row class="fill-height" align="center" justify="center">
+        <v-col cols="12" md="8" lg="6" class="text-center">
+          <v-icon size="64" class="mb-4" color="grey-darken-1">mdi-ghost-off</v-icon>
+          <p class="text-h5 text-grey-darken-1 mb-0">
+            Lo sentimos, no encontramos resultados para "{{ nameProductSearch }}"
+          </p>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-main>
 </template>
 
 <script setup>
-  import { ref, onMounted } from 'vue'
+  import { ref, onMounted, computed } from 'vue'
   import { useRoute } from 'vue-router'
   import { getProducts as fetchProductsApi } from '@/services/apiService'
 
@@ -56,6 +66,17 @@
   // state
   const products = ref([])
 
+  const productSearch = computed(() => {
+    return Object.keys(route.query).length > 0 ? route.query : getCategoryParams()
+  })
+
+  const nameProductSearch = computed(() => {
+    const values = Object.values(productSearch.value)
+    return values[0] ?? ''
+  })
+
+  const hasProducts = computed(() => products.value.length > 0)
+
   // obtener params
   const getCategoryParams = () => {
     if (route.query.category !== undefined) {
@@ -64,19 +85,10 @@
     return {}
   }
 
-  // fetch
   const getProducts = async params => {
     products.value = await fetchProductsApi(params)
   }
-  const fetchProducts = () => {
-    let params = ''
-    if (route.query) {
-      params = route.query
-    } else {
-      params = getCategoryParams()
-    }
-    getProducts(params)
-  }
+  const fetchProducts = () => getProducts(productSearch.value)
 
   onMounted(() => {
     fetchProducts()
