@@ -167,7 +167,6 @@
 
   // búsqueda
   const handleSearch = () => {
-    if (!search.value) return
     router.push({
       path: '/products',
       query: { nombre: search.value }
