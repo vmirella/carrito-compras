@@ -8,7 +8,10 @@
     "lint": "vue-cli-service lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "validate": "yarn lint && yarn format:check"
+    "validate": "yarn lint && yarn format:check",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@vue/compiler-sfc": "3",
@@ -25,18 +28,23 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.26.0",
     "@mdi/font": "^7.4.47",
+    "@vitejs/plugin-vue": "^5",
+    "@vitest/coverage-v8": "^2",
     "@vue/cli-plugin-babel": "^5.0.8",
     "@vue/cli-plugin-eslint": "^5.0.8",
     "@vue/cli-service": "5",
     "@vue/eslint-config-prettier": "^9.0.0",
+    "@vue/test-utils": "^2",
     "cache-loader": "^4.1.0",
     "deepmerge": "^4.3.1",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.28.0",
+    "jsdom": "^25",
     "material-design-icons-iconfont": "^5.0.1",
     "prettier": "^3.0.0",
     "sass": "^1.98.0",
-    "sass-loader": "^10"
+    "sass-loader": "^10",
+    "vitest": "^2"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
