@@ -145,16 +145,21 @@
 
   // methods
   const add = () => {
-    store.addCart({
+    const parsedQuantity = Number(quantity.value)
+
+    if (!product.value || !size.value || !Number.isFinite(parsedQuantity)) return
+
+    const normalizedQuantity = Math.min(10, Math.max(1, Math.floor(parsedQuantity)))
+    const wasAdded = store.addCart({
       id: product.value.id,
       name: product.value.nombre,
       price: product.value.precio,
       image: product.value.imagen,
       size: size.value,
-      quantity: quantity.value
+      quantity: normalizedQuantity
     })
 
-    dialog.value = true
+    if (wasAdded) dialog.value = true
   }
 
   const getProduct = async () => {

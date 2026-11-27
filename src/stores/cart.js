@@ -1,8 +1,25 @@
 import { defineStore } from 'pinia'
 
+const MAX_QUANTITY = 10
+
+const normalizeQuantity = quantity => {
+  const parsed = Number(quantity)
+  if (!Number.isFinite(parsed)) return 1
+  return Math.min(MAX_QUANTITY, Math.max(1, Math.floor(parsed)))
+}
+
+const loadCart = () => {
+  try {
+    const storedCart = JSON.parse(localStorage.getItem('cart'))
+    return Array.isArray(storedCart) ? storedCart : []
+  } catch {
+    return []
+  }
+}
+
 export const useCartStore = defineStore('cart', {
   state: () => ({
-    cart: JSON.parse(localStorage.getItem('cart')) || []
+    cart: loadCart()
   }),
 
   getters: {
@@ -17,30 +34,35 @@ export const useCartStore = defineStore('cart', {
     },
 
     addCart(product) {
-      const key = `${product.id}-${product.size}`
+      if (!product?.id || !product?.size) return false
 
+      const key = `${product.id}-${product.size}`
+      const quantity = normalizeQuantity(product.quantity)
       const existing = this.cart.find(p => p.key === key)
 
       if (existing) {
-        existing.quantity++
+        existing.quantity = Math.min(MAX_QUANTITY, existing.quantity + quantity)
       } else {
         this.cart.push({
-          key, // 🔥 clave única
+          key,
           id: product.id,
           name: product.name,
           image: product.image,
           price: product.price,
           size: product.size,
-          quantity: product.quantity
+          quantity
         })
       }
 
       this.saveCart()
+      return true
     },
 
     increaseQty(key) {
       const product = this.cart.find(p => p.key === key)
-      if (product) product.quantity++
+      if (product) {
+        product.quantity = Math.min(MAX_QUANTITY, normalizeQuantity(product.quantity) + 1)
+      }
 
       this.saveCart()
     },
@@ -49,7 +71,7 @@ export const useCartStore = defineStore('cart', {
       const product = this.cart.find(p => p.key === key)
 
       if (product) {
-        product.quantity--
+        product.quantity = normalizeQuantity(product.quantity) - 1
 
         if (product.quantity <= 0) {
           this.removeProduct(key)
