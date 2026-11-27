@@ -54,4 +54,39 @@ describe('cart store', () => {
 
     expect(store.cart).toHaveLength(0)
   })
+
+  it('rejects a product without a size', () => {
+    const store = useCartStore()
+
+    const wasAdded = store.addCart({ ...product, size: '' })
+
+    expect(wasAdded).toBe(false)
+    expect(store.cart).toHaveLength(0)
+  })
+
+  it('normalizes quantities outside the allowed range', () => {
+    const store = useCartStore()
+
+    store.addCart({ ...product, quantity: 99 })
+
+    expect(store.cart[0].quantity).toBe(10)
+  })
+
+  it('does not exceed ten units in an existing line', () => {
+    const store = useCartStore()
+
+    store.addCart({ ...product, quantity: 8 })
+    store.addCart({ ...product, quantity: 8 })
+
+    expect(store.cart[0].quantity).toBe(10)
+  })
+
+  it('ignores corrupt localStorage data', () => {
+    localStorage.setItem('cart', '{invalid json')
+    setActivePinia(createPinia())
+
+    const store = useCartStore()
+
+    expect(store.cart).toEqual([])
+  })
 })
