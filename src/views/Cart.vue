@@ -24,7 +24,7 @@
 
       <!-- IMAGE -->
       <template #[`item.image`]="{ item }">
-        <v-img :src="`https://josetello.com/cart/${item.image}`" max-width="80" class="mx-auto" />
+        <v-img :src="getAssetUrl(item.image)" max-width="80" class="mx-auto" />
       </template>
 
       <!-- NAME -->
@@ -73,6 +73,7 @@
 <script setup>
   import { computed } from 'vue'
   import { useCartStore } from '@/stores/cart'
+  import { getAssetUrl } from '@/services/apiService'
 
   const cartStore = useCartStore()
   const headers = [

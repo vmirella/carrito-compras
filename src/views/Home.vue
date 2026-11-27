@@ -5,7 +5,7 @@
       <v-carousel-item
         v-for="(slide, i) in slider"
         :key="i"
-        :src="`https://josetello.com/cart/${slide.imagen}`"
+        :src="getAssetUrl(slide.imagen)"
         cover
       />
     </v-carousel>
@@ -19,7 +19,13 @@
 
         <v-container fluid>
           <v-row dense>
-            <v-col v-for="category in categories" :key="category.nombre" cols="12" sm="6" md="4">
+            <v-col
+              v-for="category in categories || []"
+              :key="category.nombre"
+              cols="12"
+              sm="6"
+              md="4"
+            >
               <v-card
                 :to="{
                   path: '/products',
@@ -30,7 +36,7 @@
                 color="surface"
               >
                 <v-img
-                  :src="`https://josetello.com/cart/${category.imagen}`"
+                  :src="getAssetUrl(category.imagen)"
                   height="200"
                   cover
                   class="align-end justify-center"
@@ -54,7 +60,7 @@
 
         <v-container fluid class="mb-5">
           <v-row dense>
-            <v-col v-for="product in products" :key="product.nombre" cols="12" sm="6" md="3">
+            <v-col v-for="product in products || []" :key="product.nombre" cols="12" sm="6" md="3">
               <v-card
                 class="h-100 transition-card"
                 color="surface"
@@ -64,7 +70,7 @@
                   query: { product: product.nombre }
                 }"
               >
-                <v-img :src="`https://josetello.com/cart/${product.imagen}`" height="250" cover />
+                <v-img :src="getAssetUrl(product.imagen)" height="250" cover />
 
                 <v-card-title class="text-center">
                   <!-- NOMBRE -->
@@ -84,33 +90,24 @@
 </template>
 
 <script setup>
-  import { ref, onMounted } from 'vue'
-  import { getSlider, getCategories, getProducts } from '@/services/apiService'
+  import { onMounted } from 'vue'
+  import { getAssetUrl, getSlider, getCategories, getProducts } from '@/services/apiService'
   import { useAppTheme } from '@/composables/useAppTheme'
-  // state
-  const categories = ref([])
-  const slider = ref([])
-  const products = ref([])
+  import { useAsyncData } from '@/composables/useAsyncData'
+
+  const sliderRequest = useAsyncData(getSlider)
+  const categoriesRequest = useAsyncData(getCategories)
+  const productsRequest = useAsyncData(params => getProducts(params))
+
+  const slider = sliderRequest.data
+  const categories = categoriesRequest.data
+  const products = productsRequest.data
   const { theme } = useAppTheme()
-  // methods
-  const fetchSlider = async () => {
-    slider.value = await getSlider()
-  }
 
-  const fetchCategories = async () => {
-    categories.value = await getCategories()
-  }
-
-  const fetchProducts = async () => {
-    const params = { type: 'home' }
-    products.value = await getProducts(params)
-  }
-
-  // lifecycle
   onMounted(() => {
-    fetchSlider()
-    fetchCategories()
-    fetchProducts()
+    sliderRequest.execute()
+    categoriesRequest.execute()
+    productsRequest.execute({ type: 'home' })
   })
 </script>
 
