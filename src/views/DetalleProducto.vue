@@ -18,7 +18,7 @@
           <v-col cols="12" md="6" lg="5">
             <v-img
               v-if="product?.imagen"
-              :src="`https://josetello.com/cart/${product.imagen}`"
+              :src="getAssetUrl(product.imagen)"
               aspect-ratio="1"
               cover
               class="rounded-lg"
@@ -105,7 +105,8 @@
   import { ref, onMounted, computed, watch } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
   import { useCartStore } from '@/stores/cart'
-  import { getProducts } from '@/services/apiService'
+  import { getAssetUrl, getProducts } from '@/services/apiService'
+  import { useAsyncData } from '@/composables/useAsyncData'
 
   // router
   const router = useRouter()
@@ -115,7 +116,11 @@
   const store = useCartStore()
 
   // state
-  const product = ref(null)
+  const productRequest = useAsyncData(async params => {
+    const response = await getProducts(params)
+    return response?.[0] ?? null
+  })
+  const product = productRequest.data
   const size = ref('')
   const quantity = ref(1)
   const dialog = ref(false)
@@ -166,8 +171,7 @@
       nombre: productName
     }
 
-    const response = await getProducts(params)
-    product.value = response?.[0] ?? null
+    await productRequest.execute(params)
   }
   onMounted(() => {
     getProduct()

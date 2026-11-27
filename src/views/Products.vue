@@ -19,7 +19,7 @@
             }"
           >
             <!-- IMAGE -->
-            <v-img :src="`https://josetello.com/cart/${product.imagen}`" aspect-ratio="1" cover>
+            <v-img :src="getAssetUrl(product.imagen)" aspect-ratio="1" cover>
               <template #placeholder>
                 <v-row class="fill-height align-center justify-center">
                   <v-progress-circular indeterminate />
@@ -56,15 +56,17 @@
 </template>
 
 <script setup>
-  import { ref, onMounted, computed } from 'vue'
+  import { onMounted, computed } from 'vue'
   import { useRoute } from 'vue-router'
-  import { getProducts as fetchProductsApi } from '@/services/apiService'
+  import { getAssetUrl, getProducts as fetchProductsApi } from '@/services/apiService'
+  import { useAsyncData } from '@/composables/useAsyncData'
 
   // router
   const route = useRoute()
 
   // state
-  const products = ref([])
+  const productsRequest = useAsyncData(fetchProductsApi)
+  const products = computed(() => productsRequest.data.value || [])
 
   const productSearch = computed(() => {
     return Object.keys(route.query).length > 0 ? route.query : getCategoryParams()
@@ -85,10 +87,7 @@
     return {}
   }
 
-  const getProducts = async params => {
-    products.value = await fetchProductsApi(params)
-  }
-  const fetchProducts = () => getProducts(productSearch.value)
+  const fetchProducts = () => productsRequest.execute(productSearch.value)
 
   onMounted(() => {
     fetchProducts()
