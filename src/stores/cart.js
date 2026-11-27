@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { loadCart, saveCart } from '@/utils/cartStorage'
 
 const MAX_QUANTITY = 10
 
@@ -8,18 +9,23 @@ const normalizeQuantity = quantity => {
   return Math.min(MAX_QUANTITY, Math.max(1, Math.floor(parsed)))
 }
 
-const loadCart = () => {
-  try {
-    const storedCart = JSON.parse(localStorage.getItem('cart'))
-    return Array.isArray(storedCart) ? storedCart : []
-  } catch {
-    return []
+const normalizeStoredItem = item => {
+  const quantity = normalizeQuantity(item.quantity)
+  const price = Number(item.price)
+
+  if (!Number.isFinite(price) || price < 0) return null
+
+  return {
+    ...item,
+    key: item.key || `${item.id}-${item.size}`,
+    quantity,
+    price
   }
 }
 
 export const useCartStore = defineStore('cart', {
   state: () => ({
-    cart: loadCart()
+    cart: loadCart(normalizeStoredItem)
   }),
 
   getters: {
@@ -30,7 +36,7 @@ export const useCartStore = defineStore('cart', {
 
   actions: {
     saveCart() {
-      localStorage.setItem('cart', JSON.stringify(this.cart))
+      saveCart(this.cart)
     },
 
     addCart(product) {

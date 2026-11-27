@@ -89,4 +89,34 @@ describe('cart store', () => {
 
     expect(store.cart).toEqual([])
   })
+
+  it('restores and normalizes valid stored data', () => {
+    localStorage.setItem(
+      'cart',
+      JSON.stringify([{ id: 1, name: 'Polo', size: 'M', price: '50', quantity: 99 }])
+    )
+    setActivePinia(createPinia())
+
+    const store = useCartStore()
+
+    expect(store.cart).toHaveLength(1)
+    expect(store.cart[0].key).toBe('1-M')
+    expect(store.cart[0].quantity).toBe(10)
+    expect(store.cart[0].price).toBe(50)
+  })
+
+  it('filters malformed stored entries', () => {
+    localStorage.setItem(
+      'cart',
+      JSON.stringify([
+        { id: 1, name: 'Polo', size: 'M', price: 50, quantity: 1 },
+        { id: null, name: 'Sin id', size: 'M', price: 50, quantity: 1 }
+      ])
+    )
+    setActivePinia(createPinia())
+
+    const store = useCartStore()
+
+    expect(store.cart).toHaveLength(1)
+  })
 })
