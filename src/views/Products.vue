@@ -95,58 +95,64 @@
       </div>
     </v-container>
 
-    <v-container fluid v-if="hasProducts">
-      <v-row>
-        <v-col
-          v-for="product in products"
-          :key="product.id"
-          cols="12"
-          sm="6"
-          md="4"
-          lg="3"
-          class="pa-2"
-        >
-          <v-card
-            class="h-100 d-flex flex-column"
-            :to="{
-              path: '/detailproducts',
-              query: { product: product.nombre }
-            }"
+    <AsyncState
+      :loading="productsRequest.isLoading.value"
+      :error="productsRequest.error.value"
+      @retry="fetchProducts"
+    >
+      <v-container fluid v-if="hasProducts">
+        <v-row>
+          <v-col
+            v-for="product in products"
+            :key="product.id"
+            cols="12"
+            sm="6"
+            md="4"
+            lg="3"
+            class="pa-2"
           >
-            <!-- IMAGE -->
-            <v-img :src="getAssetUrl(product.imagen)" aspect-ratio="1" cover>
-              <template #placeholder>
-                <v-row class="fill-height align-center justify-center">
-                  <v-progress-circular indeterminate />
-                </v-row>
-              </template>
-            </v-img>
+            <v-card
+              class="h-100 d-flex flex-column"
+              :to="{
+                path: '/detailproducts',
+                query: { product: product.nombre }
+              }"
+            >
+              <!-- IMAGE -->
+              <v-img :src="getAssetUrl(product.imagen)" aspect-ratio="1" cover>
+                <template #placeholder>
+                  <v-row class="fill-height align-center justify-center">
+                    <v-progress-circular indeterminate />
+                  </v-row>
+                </template>
+              </v-img>
 
-            <!-- INFO -->
-            <v-card-title class="text-center py-2">
-              <div class="text-capitalize text-subtitle-1 text-truncate">
-                {{ product.nombre }}
-              </div>
-            </v-card-title>
+              <!-- INFO -->
+              <v-card-title class="text-center py-2">
+                <div class="text-capitalize text-subtitle-1 text-truncate">
+                  {{ product.nombre }}
+                </div>
+              </v-card-title>
 
-            <!-- PRECIO -->
-            <v-card-text class="text-center py-0">
-              <div class="text-body-1 font-weight-medium">S/. {{ product.precio }}</div>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-container fluid v-else class="fill-height">
-      <v-row class="fill-height" align="center" justify="center">
-        <v-col cols="12" md="8" lg="6" class="text-center">
-          <v-icon size="64" class="mb-4" color="grey-darken-1">mdi-ghost-off</v-icon>
-          <p class="text-h5 text-grey-darken-1 mb-0">
-            Lo sentimos, no encontramos resultados para "{{ nameProductSearch }}"
-          </p>
-        </v-col>
-      </v-row>
-    </v-container>
+              <!-- PRECIO -->
+              <v-card-text class="text-center py-0">
+                <div class="text-body-1 font-weight-medium">S/. {{ product.precio }}</div>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-container fluid v-else class="fill-height">
+        <v-row class="fill-height" align="center" justify="center">
+          <v-col cols="12" md="8" lg="6" class="text-center">
+            <v-icon size="64" class="mb-4" color="grey-darken-1">mdi-ghost-off</v-icon>
+            <p class="text-h5 text-grey-darken-1 mb-0">
+              Lo sentimos, no encontramos resultados para "{{ nameProductSearch }}"
+            </p>
+          </v-col>
+        </v-row>
+      </v-container>
+    </AsyncState>
   </v-main>
 </template>
 
@@ -156,6 +162,7 @@
   import { getAssetUrl, getProducts as fetchProductsApi } from '@/services/apiService'
   import { useAsyncData } from '@/composables/useAsyncData'
   import { filterAndSortProducts } from '@/utils/catalogFilters'
+  import AsyncState from '@/components/AsyncState.vue'
 
   // router
   const route = useRoute()
