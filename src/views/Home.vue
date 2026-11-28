@@ -1,99 +1,108 @@
 <template>
   <v-main>
-    <!-- CAROUSEL -->
-    <v-carousel v-if="slider?.length" height="300" class="mb-4" show-arrows="hover" cycle>
-      <v-carousel-item
-        v-for="(slide, i) in slider"
-        :key="i"
-        :src="getAssetUrl(slide.imagen)"
-        cover
-      />
-    </v-carousel>
+    <AsyncState :loading="isLoading" :error="firstError" @retry="fetchHomeData">
+      <!-- CAROUSEL -->
+      <v-carousel v-if="slider?.length" height="300" class="mb-4" show-arrows="hover" cycle>
+        <v-carousel-item
+          v-for="(slide, i) in slider"
+          :key="i"
+          :src="getAssetUrl(slide.imagen)"
+          cover
+        />
+      </v-carousel>
 
-    <v-row justify="center" class="mx-2">
-      <v-col cols="12" lg="8">
-        <!-- CATEGORÍAS -->
-        <v-card-text class="text-center mt-5 pb-1">
-          <h2 class="text-h5 font-weight-semi-bold text-main">Nuestras Categorías</h2>
-        </v-card-text>
+      <v-row justify="center" class="mx-2">
+        <v-col cols="12" lg="8">
+          <!-- CATEGORÍAS -->
+          <v-card-text class="text-center mt-5 pb-1">
+            <h2 class="text-h5 font-weight-semi-bold text-main">Nuestras Categorías</h2>
+          </v-card-text>
 
-        <v-container fluid>
-          <v-row dense>
-            <v-col
-              v-for="category in categories || []"
-              :key="category.nombre"
-              cols="12"
-              sm="6"
-              md="4"
-            >
-              <v-card
-                :to="{
-                  path: '/products',
-                  query: { category: category.nombre }
-                }"
-                class="h-100 transition-card"
-                hover
-                color="surface"
+          <v-container fluid>
+            <v-row dense>
+              <v-col
+                v-for="category in categories || []"
+                :key="category.nombre"
+                cols="12"
+                sm="6"
+                md="4"
               >
-                <v-img
-                  :src="getAssetUrl(category.imagen)"
-                  height="200"
-                  cover
-                  class="align-end justify-center"
+                <v-card
+                  :to="{
+                    path: '/products',
+                    query: { category: category.nombre }
+                  }"
+                  class="h-100 transition-card"
+                  hover
+                  color="surface"
                 >
-                  <v-card-title
-                    class="text-capitalize text-subtitle"
-                    :class="theme === 'light' ? 'gradient-light' : 'gradient-dark'"
+                  <v-img
+                    :src="getAssetUrl(category.imagen)"
+                    height="200"
+                    cover
+                    class="align-end justify-center"
                   >
-                    {{ category.nombre }}
-                  </v-card-title>
-                </v-img>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-container>
+                    <v-card-title
+                      class="text-capitalize text-subtitle"
+                      :class="theme === 'light' ? 'gradient-light' : 'gradient-dark'"
+                    >
+                      {{ category.nombre }}
+                    </v-card-title>
+                  </v-img>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-container>
 
-        <!-- PRODUCTOS -->
-        <v-card-text class="text-center mt-5 pb-1">
-          <h2 class="text-h5 font-weight-semi-bold text-main">Nuevos Productos</h2>
-        </v-card-text>
+          <!-- PRODUCTOS -->
+          <v-card-text class="text-center mt-5 pb-1">
+            <h2 class="text-h5 font-weight-semi-bold text-main">Nuevos Productos</h2>
+          </v-card-text>
 
-        <v-container fluid class="mb-5">
-          <v-row dense>
-            <v-col v-for="product in products || []" :key="product.nombre" cols="12" sm="6" md="3">
-              <v-card
-                class="h-100 transition-card"
-                color="surface"
-                hover
-                :to="{
-                  path: '/detailproducts',
-                  query: { product: product.nombre }
-                }"
+          <v-container fluid class="mb-5">
+            <v-row dense>
+              <v-col
+                v-for="product in products || []"
+                :key="product.nombre"
+                cols="12"
+                sm="6"
+                md="3"
               >
-                <v-img :src="getAssetUrl(product.imagen)" height="250" cover />
+                <v-card
+                  class="h-100 transition-card"
+                  color="surface"
+                  hover
+                  :to="{
+                    path: '/detailproducts',
+                    query: { product: product.nombre }
+                  }"
+                >
+                  <v-img :src="getAssetUrl(product.imagen)" height="250" cover />
 
-                <v-card-title class="text-center">
-                  <!-- NOMBRE -->
-                  <div class="text-capitalize text-subtitle-1">
-                    {{ product.nombre }}
-                  </div>
-                </v-card-title>
-                <!-- PRECIO -->
-                <div class="mb-2 text-body-large text-center">S/. {{ product.precio }}</div>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-col>
-    </v-row>
+                  <v-card-title class="text-center">
+                    <!-- NOMBRE -->
+                    <div class="text-capitalize text-subtitle-1">
+                      {{ product.nombre }}
+                    </div>
+                  </v-card-title>
+                  <!-- PRECIO -->
+                  <div class="mb-2 text-body-large text-center">S/. {{ product.precio }}</div>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-col>
+      </v-row>
+    </AsyncState>
   </v-main>
 </template>
 
 <script setup>
-  import { onMounted } from 'vue'
+  import { computed, onMounted } from 'vue'
   import { getAssetUrl, getSlider, getCategories, getProducts } from '@/services/apiService'
   import { useAppTheme } from '@/composables/useAppTheme'
   import { useAsyncData } from '@/composables/useAsyncData'
+  import AsyncState from '@/components/AsyncState.vue'
 
   const sliderRequest = useAsyncData(getSlider)
   const categoriesRequest = useAsyncData(getCategories)
@@ -104,11 +113,24 @@
   const products = productsRequest.data
   const { theme } = useAppTheme()
 
-  onMounted(() => {
+  const isLoading = computed(
+    () =>
+      sliderRequest.isLoading.value ||
+      categoriesRequest.isLoading.value ||
+      productsRequest.isLoading.value
+  )
+
+  const firstError = computed(
+    () => sliderRequest.error.value || categoriesRequest.error.value || productsRequest.error.value
+  )
+
+  const fetchHomeData = () => {
     sliderRequest.execute()
     categoriesRequest.execute()
     productsRequest.execute({ type: 'home' })
-  })
+  }
+
+  onMounted(fetchHomeData)
 </script>
 
 <style scoped>

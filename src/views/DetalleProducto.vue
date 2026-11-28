@@ -12,75 +12,81 @@
       </v-row>
 
       <!-- CARD -->
-      <v-card>
-        <v-row class="pa-4" align="center">
-          <!-- IMAGEN -->
-          <v-col cols="12" md="6" lg="5">
-            <v-img
-              v-if="product?.imagen"
-              :src="getAssetUrl(product.imagen)"
-              aspect-ratio="1"
-              cover
-              class="rounded-lg"
-            />
-          </v-col>
+      <AsyncState
+        :loading="productRequest.isLoading.value"
+        :error="productRequest.error.value"
+        @retry="getProduct"
+      >
+        <v-card v-if="product">
+          <v-row class="pa-4" align="center">
+            <!-- IMAGEN -->
+            <v-col cols="12" md="6" lg="5">
+              <v-img
+                v-if="product?.imagen"
+                :src="getAssetUrl(product.imagen)"
+                aspect-ratio="1"
+                cover
+                class="rounded-lg"
+              />
+            </v-col>
 
-          <!-- INFO -->
-          <v-col cols="12" md="6" lg="5">
-            <div class="d-flex flex-column ga-3">
-              <!-- NOMBRE -->
-              <div class="text-h5 text-capitalize">
-                {{ product?.nombre }}
+            <!-- INFO -->
+            <v-col cols="12" md="6" lg="5">
+              <div class="d-flex flex-column ga-3">
+                <!-- NOMBRE -->
+                <div class="text-h5 text-capitalize">
+                  {{ product?.nombre }}
+                </div>
+
+                <!-- PRECIO -->
+                <div class="text-h6 text-primary">S/. {{ product?.precio }}</div>
+
+                <!-- DESCRIPCIÓN -->
+                <p class="text-medium-emphasis">
+                  Todas las tallas disponibles
+                  <br />
+                  Enviamos a todo el Perú
+                  <br />
+                  Haz tu pedido ahora
+                </p>
+
+                <!-- TALLA -->
+                <div>
+                  <div class="text-subtitle-2 mb-1">Talla</div>
+
+                  <v-select
+                    v-model="size"
+                    :items="sizes"
+                    label="Elige tu talla"
+                    variant="outlined"
+                    density="comfortable"
+                  />
+                </div>
+
+                <!-- CANTIDAD -->
+                <div>
+                  <div class="text-subtitle-2 mb-1">Cantidad</div>
+
+                  <v-text-field
+                    v-model="quantity"
+                    type="number"
+                    min="1"
+                    max="10"
+                    variant="outlined"
+                    density="comfortable"
+                  />
+                </div>
+
+                <!-- BOTÓN -->
+                <v-btn size="large" color="primary" block class="mt-2" @click="add">
+                  <v-icon icon="mdi-cart" class="mr-2" />
+                  Añadir al carrito
+                </v-btn>
               </div>
-
-              <!-- PRECIO -->
-              <div class="text-h6 text-primary">S/. {{ product?.precio }}</div>
-
-              <!-- DESCRIPCIÓN -->
-              <p class="text-medium-emphasis">
-                Todas las tallas disponibles
-                <br />
-                Enviamos a todo el Perú
-                <br />
-                Haz tu pedido ahora
-              </p>
-
-              <!-- TALLA -->
-              <div>
-                <div class="text-subtitle-2 mb-1">Talla</div>
-
-                <v-select
-                  v-model="size"
-                  :items="sizes"
-                  label="Elige tu talla"
-                  variant="outlined"
-                  density="comfortable"
-                />
-              </div>
-
-              <!-- CANTIDAD -->
-              <div>
-                <div class="text-subtitle-2 mb-1">Cantidad</div>
-
-                <v-text-field
-                  v-model="quantity"
-                  type="number"
-                  min="1"
-                  max="10"
-                  variant="outlined"
-                  density="comfortable"
-                />
-              </div>
-
-              <!-- BOTÓN -->
-              <v-btn size="large" color="primary" block class="mt-2" @click="add">
-                <v-icon icon="mdi-cart" class="mr-2" />
-                Añadir al carrito
-              </v-btn>
-            </div>
-          </v-col>
-        </v-row>
-      </v-card>
+            </v-col>
+          </v-row>
+        </v-card>
+      </AsyncState>
     </v-container>
 
     <!-- DIALOG -->
@@ -107,6 +113,7 @@
   import { useCartStore } from '@/stores/cart'
   import { getAssetUrl, getProducts } from '@/services/apiService'
   import { useAsyncData } from '@/composables/useAsyncData'
+  import AsyncState from '@/components/AsyncState.vue'
 
   // router
   const router = useRouter()
